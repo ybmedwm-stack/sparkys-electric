@@ -1,12 +1,21 @@
-// Sparky's Electric v2 — interactions
-// Per anthropic-skills/frontend-design: motion for delight, not for noise
+// Sparky's Electric v3 — interactions
+// Respects prefers-reduced-motion. Accessible nav toggle + form messaging.
 
 (function () {
-  // ----- Mobile nav toggle -----
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const nf = new Intl.NumberFormat('en-US');
+
+  // ----- Mobile nav toggle (with aria-expanded) -----
   const toggle = document.querySelector('.nav-toggle');
   const menu = document.querySelector('.nav-items');
   if (toggle && menu) {
-    toggle.addEventListener('click', () => menu.classList.toggle('open'));
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-controls', menu.id || 'nav-menu');
+    if (!menu.id) menu.id = 'nav-menu';
+    toggle.addEventListener('click', () => {
+      const open = menu.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
   }
 
   // ----- Active nav highlight -----
@@ -15,12 +24,15 @@
     const href = a.getAttribute('href');
     if (href === path || (path === '' && href === 'index.html')) {
       a.classList.add('active');
+      a.setAttribute('aria-current', 'page');
     }
   });
 
-  // ----- Scroll-triggered fade-in -----
+  // ----- Scroll-triggered fade-in (skipped under reduced-motion) -----
   const reveal = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window) {
+  if (prefersReduced) {
+    reveal.forEach(el => el.classList.add('visible'));
+  } else if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
@@ -34,9 +46,12 @@
     reveal.forEach(el => el.classList.add('visible'));
   }
 
-  // ----- Animated counters -----
+  // ----- Animated counters (with thousands separator, skipped under reduced-motion) -----
   const counters = document.querySelectorAll('[data-count]');
-  if (counters.length && 'IntersectionObserver' in window) {
+  if (prefersReduced) {
+    // Reduced-motion: just show the final value statically, formatted.
+    counters.forEach(el => formatFinal(el));
+  } else if (counters.length && 'IntersectionObserver' in window) {
     const cio = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
@@ -46,6 +61,22 @@
       });
     }, { threshold: 0.4 });
     counters.forEach(el => cio.observe(el));
+  } else {
+    counters.forEach(el => formatFinal(el));
+  }
+
+  function formatFinal(el) {
+    const target = parseFloat(el.dataset.count);
+    const decimals = (el.dataset.decimals && parseInt(el.dataset.decimals, 10)) || 0;
+    const suffix = el.dataset.suffix || '';
+    el.textContent = formatNum(target, decimals) + suffix;
+  }
+
+  function formatNum(value, decimals) {
+    if (decimals > 0) {
+      return value.toFixed(decimals);
+    }
+    return nf.format(Math.round(value));
   }
 
   function animateCount(el) {
@@ -59,20 +90,19 @@
       const progress = Math.min(elapsed / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
       const value = target * eased;
-      el.textContent = value.toFixed(decimals) + suffix;
+      el.textContent = formatNum(value, decimals) + suffix;
       if (progress < 1) requestAnimationFrame(frame);
-      else el.textContent = target.toFixed(decimals) + suffix;
+      else el.textContent = formatNum(target, decimals) + suffix;
     }
     requestAnimationFrame(frame);
   }
 
-  // ----- Electric arc on CTA hover -----
-  // Subtle yellow arc traces from the hovered button to a nearby anchor,
-  // then snaps away. CSS-only would be too static; here we draw an SVG path.
+  // ----- Electric arc on CTA hover (disabled under reduced-motion + small screens) -----
   const ctas = document.querySelectorAll('.slab-volt');
-  if (ctas.length && window.matchMedia('(min-width: 720px)').matches) {
+  if (!prefersReduced && ctas.length && window.matchMedia('(min-width: 720px)').matches) {
     const arcSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     arcSvg.setAttribute('class', 'arc-trace');
+    arcSvg.setAttribute('aria-hidden', 'true');
     arcSvg.style.position = 'fixed';
     arcSvg.style.inset = '0';
     arcSvg.style.width = '100vw';
@@ -82,13 +112,17 @@
     arcSvg.setAttribute('viewBox', `0 0 ${window.innerWidth} ${window.innerHeight}`);
     document.body.appendChild(arcSvg);
 
+    let lastFired = 0;
     ctas.forEach(cta => {
       cta.addEventListener('mouseenter', () => {
+        // Debounce to prevent stacking on rapid hover
+        const now = Date.now();
+        if (now - lastFired < 300) return;
+        lastFired = now;
+
         const rect = cta.getBoundingClientRect();
         const startX = rect.left + rect.width / 2;
         const startY = rect.top + rect.height / 2;
-
-        // Build a jagged path simulating a lightning arc
         const endX = startX + (Math.random() * 200 - 100);
         const endY = startY - 80 - Math.random() * 120;
         const segments = 5;
@@ -121,7 +155,7 @@
     });
   }
 
-  // ----- Contact form (placeholder, Formspree wires later) -----
+  // ----- Contact form (placeholder, with accessible status messaging) -----
   const form = document.querySelector('#contact-form');
   if (form) {
     form.addEventListener('submit', (e) => {
@@ -130,6 +164,7 @@
       if (msg) {
         msg.style.display = 'block';
         msg.textContent = "Thanks. We'll be in touch within 24 hours. For emergencies call (207) 555-0142.";
+        msg.focus?.();
       }
       form.reset();
     });

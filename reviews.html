@@ -26,20 +26,20 @@
         <span class="brand-name">SPARKY'S<small>Electric · MEL-12345</small></span>
       </a>
       <button class="nav-toggle" aria-label="Toggle menu">Menu</button>
-      <div class="nav-items">
-        <a href="index.html">Index</a>
+      <div class="nav-items" id="nav-menu">
+        <a href="index.html">Home</a>
         <a href="services.html">Services</a>
-        <a href="about.html">Shop</a>
+        <a href="about.html">About</a>
         <a href="reviews.html">Reviews</a>
         <a href="contact.html">Contact</a>
-        <a href="tel:+12075550142" class="nav-cta">(207) 555-0142</a>
+        <a href="tel:+12075550142" class="nav-cta" aria-label="Call (207) 555-0142">(207) 555-0142</a>
       </div>
     </div>
   </nav>
 
   <section class="page-header">
     <div class="wrap">
-      <div class="crumbs"><a href="index.html">INDEX</a><span>·</span>REVIEWS</div>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">HOME</a><span>·</span>REVIEWS</nav>
       <h1 class="brutal">WHAT PEOPLE SAY<br><span class="accent">AFTER WE LEAVE.</span></h1>
       <p>Twenty-two years of work, and people still bother to write reviews. That's the metric that matters.</p>
     </div>
@@ -50,62 +50,63 @@
   <section>
     <div class="wrap">
 
-      <div class="review-meta reveal">
+      <div class="review-meta reveal" role="region" aria-label="Overall rating">
         <div class="big-rating">
           <span class="num">4.9</span>
-          <div class="stars">★★★★★</div>
+          <div class="stars" aria-hidden="true">★★★★★</div>
+          <span class="sr-only">4.9 out of 5 stars based on 247 Google reviews</span>
           <div class="label">GOOGLE · 247 REVIEWS</div>
         </div>
         <div>
           <h3 class="brutal">REAL CUSTOMERS.<br>REAL WORK.</h3>
           <p>A selection of recent Google reviews — emergency calls, panel upgrades, EV charger installs, and the troubleshooting jobs nobody else could figure out.</p>
-          <a href="#" class="slab slab-volt" style="margin-top:20px">READ ALL ON GOOGLE <span class="arrow">→</span></a>
+          <a href="https://www.google.com/search?q=Sparky%27s+Electric+Portland+Maine+reviews" class="slab slab-volt" target="_blank" rel="noopener" style="margin-top:20px">READ ALL ON GOOGLE <span class="arrow" aria-hidden="true">→</span></a>
         </div>
       </div>
 
       <div class="testimonials-strip" style="grid-template-columns: repeat(3, 1fr);">
 
-        <div class="tcard reveal">
+        <div class="tcard reveal" role="figure" aria-label="5 out of 5 stars">
           <blockquote>Replaced our entire panel and rewired the kitchen in three days. Quoted $4,200, charged $4,200. Showed up at 7 AM both days. Cannot recommend more.</blockquote>
           <cite>JEFF K.<small>APR 2026</small></cite>
         </div>
 
-        <div class="tcard reveal delay-1">
+        <div class="tcard reveal delay-1" role="figure" aria-label="5 out of 5 stars">
           <blockquote>Installed our Tesla wall charger. They actually did the load calculation properly — the other guy I'd called said "you'll be fine" without even looking. Trust matters.</blockquote>
           <cite>SARAH R.<small>MAR 2026</small></cite>
         </div>
 
-        <div class="tcard reveal delay-2">
+        <div class="tcard reveal delay-2" role="figure" aria-label="5 out of 5 stars">
           <blockquote>Generator wasn't kicking in during an outage. Sparky's came out that night, found a bad transfer switch, replaced it the next morning. Honest, fast, fair price.</blockquote>
           <cite>DIANE M.<small>FEB 2026</small></cite>
         </div>
 
-        <div class="tcard reveal">
+        <div class="tcard reveal" role="figure" aria-label="5 out of 5 stars">
           <blockquote>Had three other electricians look at our flickering lights problem. Nobody could find it. Ben at Sparky's spent two hours, found a bad neutral connection in the main panel, fixed it for $185.</blockquote>
           <cite>TOM M.<small>FEB 2026</small></cite>
         </div>
 
-        <div class="tcard reveal delay-1">
+        <div class="tcard reveal delay-1" role="figure" aria-label="5 out of 5 stars">
           <blockquote>I called at 11 PM on a Sunday when half my house went dark. Mark himself answered. He talked me through checking the main breaker, then was at my door at 7 AM Monday. The guy is the real deal.</blockquote>
           <cite>RACHEL W.<small>JAN 2026</small></cite>
         </div>
 
-        <div class="tcard reveal delay-2">
+        <div class="tcard reveal delay-2" role="figure" aria-label="5 out of 5 stars">
           <blockquote>Renovated our basement. Sparky's pulled the permit, did all the rough-in, came back for final, passed inspection first try. No back-and-forth, no surprises on the invoice.</blockquote>
           <cite>PAUL B.<small>DEC 2025</small></cite>
         </div>
 
-        <div class="tcard reveal">
+        <div class="tcard reveal" role="figure" aria-label="5 out of 5 stars">
           <blockquote>Installed a Generac whole-house standby for us last summer. Walked us through testing it, set up the automatic exercise schedule. When we lost power for two days in February, the house stayed warm. Worth every penny.</blockquote>
           <cite>CAROL G.<small>DEC 2025</small></cite>
         </div>
 
-        <div class="tcard reveal delay-1">
+        <div class="tcard reveal delay-1" role="figure" aria-label="5 out of 5 stars">
           <blockquote>Our 1920s Falmouth house had a Federal Pacific panel that the home inspector flagged before closing. Sparky's replaced it the week of closing so we could move in on schedule. Lifesavers.</blockquote>
           <cite>ELENA H.<small>NOV 2025</small></cite>
         </div>
 
-        <div class="tcard reveal delay-2">
+        <div class="tcard reveal delay-2" role="figure" aria-label="5 out of 5 stars">
           <blockquote>Smart home install for a new build. Cat6 to every room, Lutron Caséta throughout, security pre-wire. Done at framing, dialed in at finish. Best electrical experience I've ever had on a project.</blockquote>
           <cite>MIKE F.<small>OCT 2025</small></cite>
         </div>
